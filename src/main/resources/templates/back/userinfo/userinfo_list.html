@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>文章 - 博客管理系统</title>
+    <link rel="stylesheet" type="text/css" href="/admin/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/admin/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/admin/css/font-awesome.min.css">
+    <link rel="apple-touch-icon-precomposed" href="/admin/images/icon/icon.png">
+    <link rel="shortcut icon" href="/admin/images/icon/favicon.ico">
+    <style type="text/css">
+        .display{
+            display: none;
+        }
+    </style>
+    <script src="/admin/js/jquery-2.1.4.min.js"></script>
+</head>
+<body class="user-select" style="margin: 0;padding: 0;">
+<div>
+    <ul class="breadcrumb" style="margin: 0;">
+        <li>用户管理</li>
+        <li>用户查询</li>
+    </ul>
+</div>
+<form action="/back/user/list" method="post" class="form-inline">
+    <div class="row alert alert-info">
+        <div class="form-group">
+            <input type="text" name="userName" class="form-control" placeholder="请输入姓名"/>
+            <input type="submit" value="查询" class="btn btn-info "/>
+            <a href="/back/user/loadAdd" class="btn btn-info">添加用户</a>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>用户编号</th>
+                <th>姓名姓名</th>
+                <th>电话号码</th>
+                <th>用户账号</th>
+                <th>用户密码</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr th:each="userinfo:${user.getRecords()}">
+                    <td th:text="${userinfo.userId}"></td>
+                    <td th:text="${userinfo.userName}"></td>
+                    <td th:text="${userinfo.userPhone}"></td>
+                    <td th:text="${userinfo.userAccount}"></td>
+                    <td th:text="${userinfo.userPassword}"></td>
+                    <td><a th:href="@{/back/user/loadAdd(userId=${userinfo.userId},
+                    userName=${userinfo.userName},
+                    userPhone=${userinfo.userPhone},
+                    userAccount=${userinfo.userAccount},
+                    userPassword=${userinfo.userPassword}
+                    )}">修改</a> <a rel="6" th:onclick="del_fun([[${userinfo.userAccount}]])" >删除</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <footer class="message_footer">
+        <nav>
+            <div class="btn-toolbar operation" role="toolbar">
+                <div class="btn-group" role="group"><a class="btn btn-default" onClick="select()">全选</a> <a
+                        class="btn btn-default" onClick="reverse()">反选</a> <a class="btn btn-default"
+                                                                              onClick="noselect()">不选</a></div>
+                <div class="btn-group" role="group">
+                    <button type="submit" class="btn btn-default" data-toggle="tooltip" data-placement="bottom"
+                            title="删除全部选中" name="checkbox_delete">删除
+                    </button>
+                </div>
+            </div>
+            <ul class="pagination pagenav">
+                <li th:class="${currentIndex == 1}?'disabled'"><a aria-label="Previous"
+                                                                  th:href="@{/back/user/list(currentIndex=1)}"> <span
+                        aria-hidden="true">&laquo;</span> </a></li>
+                <li th:class="${currentIndex == i}?'active'" th:each="i:${#numbers.sequence(1,user.getPages())}">
+                    <a th:text="${i}" th:href="@{/back/user/list(currentIndex=${i})}"></a>
+                </li>
+                <li th:class="${currentIndex == user.getPages()}?'disabled'"><a
+                        th:href="@{/back/user/list(currentIndex=${user.getPages()})}" aria-label="Next"> <span
+                        aria-hidden="true">&raquo;</span> </a></li>
+            </ul>
+        </nav>
+    </footer>
+</form>
+<script src="/admin/js/bootstrap.min.js"></script>
+<script src="/admin/js/admin-scripts.js"></script>
+<script type="text/javascript">
+function del_fun(account) {
+   let r = confirm("你确定要删除吗")
+   if (r) {
+       $.ajax({
+           url: "/back/user/del",
+           type: "GET",
+           dataType: "JSON",
+           data: {
+               "user_account":account
+           },
+           success: function (data) {
+               if (data.state == 200) {
+                   alert("删除成功")
+                   window.location.reload()
+               } else
+                   alert("删除失败")
+
+           },
+           error: function (error) {
+               console.log(error);
+           }
+       })
+   }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>个人博客</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="/front/css/base.css" rel="stylesheet">
+<link href="/front/css/index.css" rel="stylesheet">
+</head>
+<body>
+<header>
+  <nav>
+    <ul>
+      <li><a href="/index">网站首页</a></li>
+
+      <li th:each="category,state:${categoryList}"><a th:href="@{/list(
+        categoryId=${category.getCategoryId()},
+        categoryName=${category.getCategoryName()},
+      )}" th:text="${category.getCategoryName()}"></a></li>
+      <li><a href="/message">留言</a></li>
+    </ul>
+  </nav>
+</header>
+<article>
+  <div class="pics">
+    <ul>
+      <li><img src="/front/picture/42d76eafa6495d9647a4fd245201f56c.jpg"></li>
+      <li><img src="/front/picture/c9668d65657bc41b77f6834984538979.jpg"></li>
+      <li><img src="/front/picture/13ec5c876bf437fd7e9e6b12b565a69c.jpg"></li>
+    </ul>
+  </div>
+  <div class="sleftbox">
+    <div class="newblogs">
+      <h2 class="hometitle">最新文章</h2>
+      <ul>
+        <li th:each="article,statue:${articleInfoList}">
+          <h3 class="blogtitle"><a href="/jstt/css3/2018-03-25/811.html" target="_blank" >别让这些闹心的套路，毁了你的网页设计</a></h3>
+          <div class="bloginfo" ><span class="blogpic"><a href="/jstt/css3/2018-03-25/811.html" th:title="${article.getArticleTitle()}"><img src="/front/picture/393d21b65031dd0d85eb2e5789a97b1e.jpg" alt="别让这些闹心的套路，毁了你的网页设计" /></a></span>
+            <p th:utext="${article.getArticleContent()}" class="demo">网页设计和做人一样，需要少一些套路，多一些真诚。那么下面就为大家揭穿那些看似好用，但用户体验并不好的设计模式。另外再附上解决办法，避免网页设计中出现这些问题。...</p>
+          </div>
+          <div class="autor"><span class="lm f_l"><a href="/jstt/css3/" title="css3" target="_blank"  class="classname" th:text="${categoryName.get(statue.index)}">css3</a></span><span class="dtime f_l" th:text="${#temporals.format(article.getArticleTime(),'yyyy-MM-dd')}">2018-03-25</span><span class="viewnum f_l">浏览（<a href="/">115</a>）</span><span class="f_r"><a th:href="@{/listview(categoryName=${categoryName.get(statue.index)},id=${article.getArticleId()})}" class="more">阅读原文>></a></span></div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="srightbox">
+    <div class="aboutme">
+      <h2 class="ab_title">关于我</h2>
+      <div class="avatar"><img src="/front/picture/b04.jpg" /></div>
+      <div class="ab_con">
+        <p>网名：laoniu | 老牛</p>
+        <p>职业：Java高级讲师 </p>
+      </div>
+    </div>
+    <div class="search">
+      <form action="" method="post" name="searchform" id="searchform">
+        <input name="keyboard" id="keyboard" class="input_text" value="请输入关键字" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
+        <input name="show" value="title" type="hidden">
+        <input name="tempid" value="1" type="hidden">
+        <input name="tbname" value="news" type="hidden">
+        <input name="Submit" class="input_submit" value="搜索" type="submit">
+      </form>
+    </div>
+    <div class="paihang">
+      <h2 class="ab_title"><a href="/">站长推荐</a></h2>
+      <ul>
+        <li><b><a href="/download/div/2015-04-10/746.html" target="_blank">【活动作品】柠檬绿兔小白个人博客模板30...</a></b>
+          <p>展示的是首页html，博客页面布局格式简单，没有复杂的背景，色彩局部点缀，动态的幻灯片展示，切换卡，标...</p>
+        </li>
+        <li><b><a href="/download/div/2014-02-19/649.html" target="_blank"> 个人博客模板（2014草根寻梦）30...</a></b>
+          <p>2014第一版《草根寻梦》个人博客模板简单、优雅、稳重、大气、低调。专为年轻有志向却又低调的草根站长设...</p>
+        </li>
+   
+      </ul>
+      <div class="ad"><img src="/front/picture/ad300x100.jpg"></div>
+    </div>
+
+
+  </div>
+</article>
+<footer>
+  <p>Design by <a href="http://www.XXX.com">个人博客</a> <a href="/">渝ICP备</a></p>
+</footer>
+</body>
+</html>

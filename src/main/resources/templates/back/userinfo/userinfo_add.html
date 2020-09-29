@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>修改用户 - 博客管理系统</title>
+<link rel="stylesheet" type="text/css" href="/admin/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/admin/css/style.css">
+<link rel="stylesheet" type="text/css" href="/admin/css/font-awesome.min.css">
+<link rel="apple-touch-icon-precomposed" href="/admin/images/icon/icon.png">
+<link rel="shortcut icon" href="/admin/images/icon/favicon.ico">
+<script src="/admin/js/jquery-2.1.4.min.js"></script>
+
+</head>
+
+<body class="user-select" style="{margin: 0;padding: 0;}">
+	<div>
+      		<ul class="breadcrumb" style="{margin:0}">
+      			<li>用户管理</li>
+      			<li>修改用户</li>
+      		</ul>
+      	</div>
+
+      <form action="" method="post" id="form1">
+        <div class="form-group">
+          	<label for="category-name1">用户姓名</label>
+          	<input type="text" th:value="${userInfo.getUserName()}" id="category-name1" name="userName" class="form-control" placeholder="在此处输入用户姓名" required autocomplete="off">
+       </div>
+       <div class="form-group">
+          	<label for="category-name2">电话号码</label>
+          	<input type="text" id="category-name2" th:value="${userInfo.getUserPhone()}" name="userPhone" class="form-control" placeholder="在此处输入用户姓名" required autocomplete="off">
+        </div>
+       <div class="form-group">
+          	<label for="category-name3">用户账号</label>
+          	<input type="text" id="category-name3" th:value="${userInfo.getUserAccount()}" name="userAccount" class="form-control" placeholder="在此处输入用户账号" required autocomplete="off">
+        </div>
+       <div class="form-group">
+          	<label for="category-name4">用户密码</label>
+          	<input type="text" id="category-name4" th:value="${userInfo.getUserPassword()}" name="userPassword" class="form-control" placeholder="在此处输入用户密码" required autocomplete="off">
+        </div>
+        <button class="btn btn-primary" type="submit" name="submit">添加用户</button>
+      </form>
+<script src="/admin/js/bootstrap.min.js"></script>
+<script src="/admin/js/admin-scripts.js"></script>
+<script>
+	$(function(){
+		$('.btn-primary').click(function(event){
+			$.ajax({
+				url:"/back/user/add",
+				type:"POST",
+				dataType:"JSON",
+				data:{
+					userName:$("[name='userName']").val(),
+					userPhone:$("[name='userPhone']").val(),
+					userAccount:$("[name='userAccount']").val(),
+					userPassword:$("[name='userPassword']").val()
+				},
+				success:function (data) {
+					if(data.state == 200){
+						$("[name='userName']").val('')
+						$("[name='userPhone']").val('')
+						$("[name='userAccount']").val('')
+						$("[name='userPassword']").val('')
+						alert("插入成功")
+					}else
+						alert("插入失败")
+
+				},
+                error:function (error) {
+                    console.log(error);
+                }
+			})
+			event.preventDefault()
+			return false
+		})
+	})
+
+</script>
+</body>
+
+</html>

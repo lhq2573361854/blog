@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tianling.blog.dao.CategoryInfoMapper">
+    <cache-ref namespace="com.tianling.blog.dao.CategoryInfoMapper"/>
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tianling.blog.beans.CategoryInfo">
+        <id column="category_id" property="categoryId" />
+        <result column="category_name" property="categoryName" />
+        <result column="category_alias" property="categoryAlias" />
+        <result column="category_desc" property="categoryDesc" />
+        <result column="count" property="count" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        category_id, category_name, category_alias, category_desc
+    </sql>
+    <select id="getCategoryList" resultType="com.tianling.blog.beans.CategoryInfo">
+        select category_info.*,a.count from  category_info   left join ( select category_id,count(category_id) as count from article_info group by category_id ) a on (category_info.category_id = a.category_id)
+    </select>
+    <select id="getNameById" resultType="java.lang.String">
+        select category_name from category_info where category_id=#{id}
+    </select>
+
+</mapper>

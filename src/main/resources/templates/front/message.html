@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>帝国cms关键词</title>
+<meta name="keywords" content="帝国cms" />
+<meta name="description" content="帝国cms关键词和tags标签自动同步方法" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="/admin/js/jquery-2.1.4.min.js"></script>
+<link href="/front/css/base.css" rel="stylesheet">
+<link href="/front/css/index.css" rel="stylesheet">
+<!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+<link rel="stylesheet"
+	href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
+
+<!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+<link rel="stylesheet"
+	href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+	crossorigin="anonymous">
+
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script
+	src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+	crossorigin="anonymous"></script>
+
+</head>
+<body>
+     
+	<header>
+
+		<nav>
+			<ul>
+				<li><a href="/index">网站首页</a></li>
+				<li th:each="category,state:${categoryList}"><a th:href="@{/list(
+        categoryId=${category.getCategoryId()},
+        categoryName=${category.getCategoryName()},
+      )}" th:text="${category.getCategoryName()}"></a></li>
+				<li><a href="message.html">留言</a></li>
+			</ul>
+		</nav>
+	</header>
+	<article>
+		<div class=" row container">
+			<h3>在线留言</h3>
+			<hr />
+			<form class="form-horizontal" id="form1" method="post" >
+				<div class="form-group">
+				
+					<div class="col-sm-8">
+						<input type="email" name="messageName" class="form-control" id=name placeholder="请输入姓名">
+					</div>
+				</div>
+				<div class="form-group">
+				
+					<div class="col-sm-8">
+						<textarea rows="" name="messageContent" cols="" class="form-control" placeholder="请输入留言内容"></textarea>
+					</div>
+				</div>
+				<input type="hidden" name="messageMark" value="-1">
+				<div class="form-group">
+					<div class="col-sm-10">
+						<button type="submit" class="btn btn-info" id="submit"> 提 交 </button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<hr />
+		<div class="form-group">
+		<blockquote th:each="message:${messageList}">
+  			<p >[[${message.getMessageContent()}]]
+  			<br/>
+  			<small >姓名：[[${message.getMessageName()}]]  留言时间：[[${#temporals.format(message.getMessageTime(),'yyyy-MM-dd HH:mm:ss')}]]</small></p>
+		</blockquote>
+		</div>
+	</article>
+	<footer>
+		<p>
+			Design by <a href="http://www.XXX.com">个人博客</a> <a href="/">渝ICP备</a>
+		</p>
+	</footer>
+	<script src="/front/js/61a9ee23bfbe484da195456aea8b6f8b.js"></script>
+	<script>
+		$(function(){
+			$('#submit').click(function (event){
+				$.ajax({
+					url:'/message/add',
+					type:'POST',
+					data: $('#form1').serialize(),
+					success:function(data){
+						alert(data)
+					},
+				})
+			})
+		})
+	</script>
+</body>
+</html>
